@@ -1,6 +1,6 @@
 {
   "name": "mojianzhou-wechat-markdown",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "description": "Mojianzhou: a browser-based Markdown editor for WeChat Official Account articles",
   "license": "MIT",

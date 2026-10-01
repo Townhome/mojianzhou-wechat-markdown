@@ -20,6 +20,7 @@ assert.match(html, /墨笺舟/);
 assert.match(html, /微信公众号 Markdown 排版/);
 assert.ok(!/EvoDiary|oykc1234|Kaichen Ouyang|科研日记/i.test(html), 'personal content remains in application');
 assert.ok(!/EvoDiary|oykc1234|Kaichen Ouyang|科研日记/i.test(api.sampleMarkdown), 'personal content remains in example');
+assert.match(html, /\.article-frame \{ width:min\(100%,680px\)/, 'preview width should match the publishing layout');
 const exampleImage = fs.readFileSync(path.join(root, 'examples', 'images', 'transfomer.jpg'));
 assert.match(exampleImage.subarray(0, 3).toString('hex'), /^ffd8ff$/, 'local example image is not a JPEG');
 assert.equal(api.imageAssets.get('images/transfomer.jpg'), `data:image/jpeg;base64,${exampleImage.toString('base64')}`,
@@ -43,6 +44,11 @@ for (const spec of api.themeSpecs) {
 }
 
 const theme = api.themes.archive;
+const coralCover = api.renderArticle('# 论文分享｜Attention Is All You Need', api.themes.coral);
+assert.match(coralCover, /font-size:30px/);
+assert.ok(!/font-size:33px;[^\"]*font-size:30px/.test(coralCover), 'Coral Signal title has conflicting font sizes');
+assert.match(coralCover, /━━━━　━　━/, 'Coral Signal decoration should survive rich-text copying');
+assert.ok(!/<i style="width:52px;height:5px/.test(coralCover), 'Coral Signal still uses empty decorative elements');
 api.imageAssets.clear();
 api.setDirectory('examples');
 api.imageAssets.set('examples/images/transfomer.jpg', `data:image/jpeg;base64,${exampleImage.toString('base64')}`);

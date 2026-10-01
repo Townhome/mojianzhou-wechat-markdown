@@ -187,7 +187,7 @@
     @media (max-width: 980px) {
       .workspace { grid-template-columns: 1fr; }
       textarea { max-height: none; }
-      .article-frame { width: min(100%, 780px); }
+      .article-frame { width: min(100%, 680px); }
     }
     /* The studio stays quiet so the article, rather than its controls, owns the page. */
     :root { --page-bg:#eae8e1; --text:#1b2328; --muted:#697075; --line:#d6d4cb; --accent:#1768b4; --shadow:0 18px 45px rgba(29,35,39,.08); }
@@ -225,7 +225,7 @@
     .workspace { width:min(1460px,calc(100% - 48px)); grid-template-columns:minmax(300px,.82fr) minmax(460px,1.18fr); gap:28px; margin-bottom:60px; }
     .panel-title { margin-bottom:11px; color:#555e61; font-size:11px; font-weight:750; letter-spacing:.12em; }
     textarea { height:780px; max-height:none; padding:23px; border:1px solid #c9cbc6; border-radius:3px; box-shadow:none; color:#28343a; font-size:13px; line-height:1.75; }
-    .article-frame { width:100%; min-height:520px; border:1px solid #cecfca; border-radius:3px; box-shadow:0 20px 46px rgba(26,35,38,.10); }
+    .article-frame { width:min(100%,680px); min-height:520px; border:1px solid #cecfca; border-radius:3px; box-shadow:0 20px 46px rgba(26,35,38,.10); }
     .article-frame #rendered-article { background:var(--article-paper,#fff)!important; }
     .manual-tip { color:#777f80; font-size:11px; }
     .brand-lockup { display:flex; align-items:center; gap:15px; }
@@ -661,12 +661,12 @@ print(paper_title)
 
     function renderCover(content, theme) {
       const common = `box-sizing:border-box;margin:0 0 34px;overflow:hidden;`;
-      const title = (extra = '') => `<h1 style="margin:0;color:${theme.coverText};font-family:${theme.fontProfile.heading};font-size:33px;line-height:1.36;font-weight:${theme.heading === 'serif' ? 600 : 800};letter-spacing:${theme.heading === 'serif' ? '-.025em' : '-.045em'};overflow-wrap:anywhere;${extra}">${content}</h1>`;
+      const title = (extra = '', fontSize = 33) => `<h1 style="margin:0;color:${theme.coverText};font-family:${theme.fontProfile.heading};font-size:${fontSize}px;line-height:1.36;font-weight:${theme.heading === 'serif' ? 600 : 800};letter-spacing:${theme.heading === 'serif' ? '-.025em' : '-.045em'};overflow-wrap:anywhere;${extra}">${content}</h1>`;
       const eyebrow = (color = theme.coverSub) => `<p style="margin:0;color:${color};font-family:${sans};font-size:10px;line-height:1.5;font-weight:800;letter-spacing:.18em;">MARKDOWN  /  ARTICLE</p>`;
       switch (theme.layout) {
         case 'archive': return `<section style="${common}padding:20px 0 0;border-top:5px double ${theme.accent};"><section style="display:flex;justify-content:space-between;margin:0 0 28px;">${eyebrow(theme.accent)}<span style="color:${theme.accent};font:700 12px ${sans};">文章排版</span></section><h1 style="margin:0 0 30px;color:${theme.accent};font-family:${serif};font-size:36px;line-height:1.36;font-weight:600;letter-spacing:-.03em;overflow-wrap:anywhere;">${content}</h1><section style="height:6px;background:${theme.accent};width:68px;"></section><p style="margin:11px 0 0;color:${theme.muted};font:11px/1.5 ${sans};letter-spacing:.12em;">IDEAS  ·  NOTES  ·  STORIES</p></section>`;
         case 'dispatch': return `<section style="${common}background:${theme.coverBg};padding:0;"><section style="padding:24px 25px 29px;"><section style="display:flex;justify-content:space-between;gap:8px;margin:0 0 32px;">${eyebrow()}<span style="color:${theme.coverText};font:700 11px ${sans};">文章排版</span></section>${title()}</section><section style="padding:10px 25px;background:${theme.coverText};color:${theme.coverBg};font:800 10px/1.5 ${sans};letter-spacing:.16em;">MARKDOWN / ARTICLE</section></section>`;
-        case 'signal': return `<section style="${common}background:${theme.coverBg};padding:25px 28px 29px;border-top:7px solid ${theme.coverText};">${eyebrow(theme.coverText)}<p style="margin:22px 0 10px;color:${theme.coverSub};font:700 10px ${sans};letter-spacing:.18em;">文章排版  /  内容展示</p>${title()}<section style="display:flex;gap:5px;margin-top:30px;"><i style="width:52px;height:5px;background:${theme.coverText};"></i><i style="width:10px;height:5px;background:${theme.coverText};"></i><i style="width:10px;height:5px;background:${theme.coverText};"></i></section></section>`;
+        case 'signal': return `<section style="${common}background:${theme.coverBg};padding:25px 28px 29px;border-top:7px solid ${theme.coverText};">${eyebrow(theme.coverText)}<p style="margin:22px 0 10px;color:${theme.coverSub};font:700 10px ${sans};letter-spacing:.18em;">文章排版  /  内容展示</p>${title('', 30)}<p aria-hidden="true" style="margin:25px 0 0;color:${theme.coverText};font-family:Arial,sans-serif;font-size:19px;font-weight:900;line-height:1;letter-spacing:0;">━━━━　━　━</p></section>`;
         case 'electric': return `<section style="${common}background:${theme.coverBg};padding:23px 25px 28px;"><section style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">${eyebrow('#fff9fc')}<span style="color:${theme.coverText};font:900 52px/.8 ${sans};letter-spacing:-.12em;">R</span></section><section style="margin:28px 0 0;padding:8px 0 0;border-top:3px solid ${theme.coverText};">${title('text-transform:none;')}</section><p style="margin:23px 0 0;color:#fff9fc;font:800 10px ${sans};letter-spacing:.16em;">IDEAS  /  NOTES  /  STORIES  ↗</p></section>`;
         case 'noir': return `<section style="${common}background:${theme.coverBg};padding:0;"><section style="display:flex;justify-content:space-between;padding:10px 25px;background:${theme.coverText};color:${theme.coverBg};font:800 10px ${sans};letter-spacing:.18em;"><span>MARKDOWN / ARTICLE</span><span>文章排版</span></section><section style="padding:29px 25px 28px;">${title()}<p style="margin:25px 0 0;color:#fff;font:700 11px ${sans};letter-spacing:.08em;">IDEAS  ·  NOTES  ·  STORIES</p></section></section>`;
         case 'nocturne': return `<section style="${common}background:${theme.coverBg};padding:25px 27px 30px;"><section style="display:flex;justify-content:space-between;margin-bottom:36px;">${eyebrow(theme.coverText)}<span style="color:${theme.coverText};font:700 11px ${sans};">文章排版</span></section>${title()}<p style="margin:29px 0 0;padding-top:9px;border-top:1px solid ${theme.coverText};color:${theme.coverText};font:700 10px ${sans};letter-spacing:.16em;">ARTICLE NOTES  /  IDEAS</p></section>`;
