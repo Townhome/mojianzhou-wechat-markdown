@@ -2,7 +2,18 @@
 
 **墨笺舟**是面向微信公众号文章的 Markdown 图文排版工具。它在浏览器里提供九套主题、实时预览、在线和本地图片、数学公式，以及可粘贴到公众号编辑器的富文本。无需安装软件或注册账号。
 
-## 三分钟开始
+## 在线使用
+
+打开 [墨笺舟在线编辑器](https://townhome.github.io/mojianzhou-wechat-markdown/)，推荐使用较新的 Chrome 或 Edge。无需下载或注册账号。
+
+1. 在顶部选择喜欢的主题；也可以先查看[九套主题对照页](https://townhome.github.io/mojianzhou-wechat-markdown/theme-atlas.html)。
+2. 在左侧编辑 Markdown，或点击 **导入 Markdown 与图片** 选择文章和配图。若文章和图片位于同一文件夹，点击 **导入文件夹** 并选择该文件夹。
+3. 在右侧检查标题、图片、公式和表格的预览效果，按需调整内容或切换主题。
+4. 点击 **复制公众号正文**，粘贴到微信公众号文章编辑器，再检查图片、公式、表格和手机预览后发布。
+
+编辑器不会自动保存文章。请保存自己的 Markdown 原稿；刷新网页后，需重新导入本地文章和图片。导入的本地文件只在当前浏览器页面中处理，不会由编辑器上传到服务器。
+
+## 本地使用
 
 1. 下载本项目并解压，双击打开 [index.html](./index.html)。推荐使用较新的 Chrome 或 Edge。
 2. 论文分享示例和原论文结构图会自动显示。点击上方主题卡切换风格，再把左侧内容改成自己的文章。
@@ -10,8 +21,6 @@
 4. 点击 **复制公众号正文**，到微信公众号后台的文章编辑器里粘贴。粘贴后检查图片、公式、表格和手机预览，再发布。
 
 想先看所有主题，可打开 [theme-atlas.html](./theme-atlas.html)。完整的论文分享示例在 [examples/example.md](./examples/example.md)，原论文结构图文件在 [examples/images/transfomer.jpg](./examples/images/transfomer.jpg)。编辑器内已嵌入这张示例图，因此直接打开 `index.html` 就能看到；导入 `examples` 文件夹可演示一般用户使用本地图片的流程。
-
-如果希望别人直接在网页使用：将整个项目上传到 GitHub 仓库，在仓库的 **Settings → Pages** 中选择从 `main` 分支的根目录发布。等 GitHub Pages 给出网址后，把它发给使用者即可。编辑器不会自动保存文章，写作时请及时保存自己的 Markdown 文件。
 
 ## 用自己的文章和图片
 
