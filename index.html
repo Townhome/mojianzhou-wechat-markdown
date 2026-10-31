@@ -288,6 +288,7 @@
   </main>
 
   <script>
+    const articleFontSize = 14;
     const sans = "-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans CJK SC',Arial,sans-serif";
     const serif = "Georgia,'Songti SC','Noto Serif CJK SC','SimSun',serif";
     const readingFont = "system-ui,-apple-system,BlinkMacSystemFont,'HarmonyOS Sans SC','MiSans','OPPO Sans','PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif";
@@ -303,16 +304,17 @@
       { key:'prism', number:'08', name:'晶石紫', english:'Prism Review', layout:'prism', pair:['#690DAD','#45FF12'], shell:'#ffffff', text:'#2e2040', muted:'#70627e', faint:'#958aa1', line:'#d8cce0', soft:'#eefaeb', soft2:'#f5edf9', codeBg:'#360a5d', codeText:'#d8ffce', accent:'#690dad', accent2:'#326c16', formula:'#5c3b75', border:'#cfc0d9', tableHead:'#e9ffd9', coverBg:'#690dad', coverText:'#60ff24', coverSub:'#e5d4f4', heading:'serif' },
       { key:'sunprint', number:'09', name:'银杏黄', english:'Sunprint', layout:'sunprint', pair:['#FFFF00','#0586CE'], shell:'#ffffff', text:'#123c5a', muted:'#52728b', faint:'#7d97a7', line:'#bfd4d8', soft:'#e4f4f8', soft2:'#fffec3', codeBg:'#075b8a', codeText:'#faffdb', accent:'#075c9d', accent2:'#856800', formula:'#2e6788', border:'#aeced8', tableHead:'#fff960', coverBg:'#ffff00', coverText:'#0074bd', coverSub:'#316a8b', heading:'sans' }
     ];
+    // 正文统一缩小 1px，保留各主题的无单位行高，并收紧块间留白以适配手机阅读。
     const rhythms = {
-      archive:   { articlePadding:'52px 4% 58px', paragraphGap:'26px', lineHeight:'1.94', h2Top:'52px', h2Gap:'18px' },
-      dispatch:  { articlePadding:'46px 3% 52px', paragraphGap:'23px', lineHeight:'1.86', h2Top:'44px', h2Gap:'16px' },
-      signal:    { articlePadding:'42px 3% 48px', paragraphGap:'22px', lineHeight:'1.82', h2Top:'40px', h2Gap:'15px' },
-      electric:  { articlePadding:'43px 3% 49px', paragraphGap:'22px', lineHeight:'1.84', h2Top:'43px', h2Gap:'15px' },
-      noir:      { articlePadding:'44px 3% 50px', paragraphGap:'22px', lineHeight:'1.85', h2Top:'43px', h2Gap:'16px' },
-      nocturne:  { articlePadding:'50px 4% 58px', paragraphGap:'26px', lineHeight:'1.96', h2Top:'50px', h2Gap:'18px' },
-      field:     { articlePadding:'46px 3% 52px', paragraphGap:'25px', lineHeight:'1.90', h2Top:'47px', h2Gap:'17px' },
-      prism:     { articlePadding:'48px 3% 54px', paragraphGap:'25px', lineHeight:'1.91', h2Top:'48px', h2Gap:'17px' },
-      sunprint:  { articlePadding:'44px 3% 50px', paragraphGap:'23px', lineHeight:'1.86', h2Top:'44px', h2Gap:'16px' }
+      archive:   { articlePadding:'52px 4% 58px', paragraphGap:'24px', lineHeight:'1.94', h2Top:'48px', h2Gap:'17px' },
+      dispatch:  { articlePadding:'46px 3% 52px', paragraphGap:'21px', lineHeight:'1.86', h2Top:'40px', h2Gap:'15px' },
+      signal:    { articlePadding:'42px 3% 48px', paragraphGap:'20px', lineHeight:'1.82', h2Top:'36px', h2Gap:'14px' },
+      electric:  { articlePadding:'43px 3% 49px', paragraphGap:'20px', lineHeight:'1.84', h2Top:'39px', h2Gap:'14px' },
+      noir:      { articlePadding:'44px 3% 50px', paragraphGap:'20px', lineHeight:'1.85', h2Top:'39px', h2Gap:'15px' },
+      nocturne:  { articlePadding:'50px 4% 58px', paragraphGap:'24px', lineHeight:'1.96', h2Top:'46px', h2Gap:'17px' },
+      field:     { articlePadding:'46px 3% 52px', paragraphGap:'23px', lineHeight:'1.90', h2Top:'43px', h2Gap:'16px' },
+      prism:     { articlePadding:'48px 3% 54px', paragraphGap:'23px', lineHeight:'1.91', h2Top:'44px', h2Gap:'16px' },
+      sunprint:  { articlePadding:'44px 3% 50px', paragraphGap:'21px', lineHeight:'1.86', h2Top:'40px', h2Gap:'15px' }
     };
     function blendInk(base, soft, ratio = 0.13) {
       const channel = offset => Math.round(
@@ -332,7 +334,7 @@
         mono,
         formula:"Georgia,'Times New Roman',serif"
       },
-      density: { ...rhythms[spec.layout], codePadding:'16px 15px', tablePadding:'11px 9px' }
+      density: { ...rhythms[spec.layout], codePadding:'15px 14px', tablePadding:'10px 8px' }
     }]));
 
     const sampleMarkdown = `# 论文分享｜Attention Is All You Need
@@ -461,9 +463,9 @@ print(paper_title)
     }
 
     function buildStyles(theme) {
-      styles.inlineCode = `padding:2px 5px;background:${theme.soft};color:${theme.accent};border-bottom:1px solid ${theme.accent};font-family:${theme.fontProfile.mono};font-size:13px;`;
-      styles.paragraph = `margin:0 0 ${theme.density.paragraphGap};color:${theme.bodyInk};font-family:${theme.fontProfile.reading};font-size:15px;font-weight:400;line-height:${theme.density.lineHeight};letter-spacing:.015em;text-align:justify;text-justify:inter-ideograph;`;
-      styles.small = `margin:0;color:${theme.muted};font-size:14px;line-height:1.86;text-align:left;`;
+      styles.inlineCode = `padding:2px 5px;background:${theme.soft};color:${theme.accent};border-bottom:1px solid ${theme.accent};font-family:${theme.fontProfile.mono};font-size:12px;`;
+      styles.paragraph = `margin:0 0 ${theme.density.paragraphGap};color:${theme.bodyInk};font-family:${theme.fontProfile.reading};font-size:${articleFontSize}px;font-weight:400;line-height:${theme.density.lineHeight};letter-spacing:.015em;text-align:justify;text-justify:inter-ideograph;`;
+      styles.small = `margin:0;color:${theme.muted};font-size:13px;line-height:1.86;text-align:left;`;
       styles.tableCell = `padding:${theme.density.tablePadding};border:0;border-bottom:1px solid ${theme.line};vertical-align:top;text-align:left;line-height:1.6;word-break:break-word;overflow-wrap:anywhere;`;
     }
 
@@ -480,12 +482,13 @@ print(paper_title)
      * 纯自包含矢量公式渲染
      * 依赖 fontCache: 'none'，字符全部为 <path> 实体，永不丢失
      */
+    // 独立公式与正文共用字号；行内公式（含 SVG 和回退文本）继承所在文字大小。
     function renderFormulaNode(rawTex, isDisplay, theme) {
       const cleanTex = String(rawTex || '').trim();
 
       // 单英文字母：使用纯原生斜体排版，最稳健
       if (!isDisplay && /^[A-Za-z]$/.test(cleanTex)) {
-        return `<span style="font-family:${theme.fontProfile.formula};font-style:italic;color:${theme.formula};padding:0 2px;">${cleanTex}</span>`;
+        return `<span style="font-family:${theme.fontProfile.formula};font-size:1em;font-style:italic;color:${theme.formula};padding:0 2px;">${cleanTex}</span>`;
       }
 
       // 公式使用低饱和墨蓝；不与朱红标题争夺视觉焦点。
@@ -505,16 +508,16 @@ print(paper_title)
             const vAlign = svg.style.verticalAlign || (isDisplay ? 'middle' : '-0.15em');
 
             if (isDisplay) {
-              /* 公式保持 MathJax 原始宽度，超宽内容由横向滚动容器承接，绝不等比压缩。 */
-              svg.setAttribute('style', `display:block;width:${w || 'auto'} !important;max-width:none !important;height:${h || 'auto'};margin:0 auto;color:${formulaColor};fill:currentColor;`);
-              return `<section class="equation-scroll" aria-label="公式，可横向滚动查看" style="display:block;width:100%;margin:16px 0;padding:7px 0 10px;box-sizing:border-box;overflow-x:auto;overflow-y:hidden;text-align:left;direction:ltr;-webkit-overflow-scrolling:touch;scrollbar-color:#91aab4 #e9eff1;scrollbar-width:thin;"><section style="display:inline-block;min-width:100%;padding:0 4px;box-sizing:border-box;white-space:nowrap;text-align:center;vertical-align:top;">${svg.outerHTML}</section></section>`;
+              /* 保留 SVG 的 ex 宽高，随正文字号同步变化；超宽公式在自身容器内滚动。 */
+              svg.setAttribute('style', `display:block;width:${w || 'auto'} !important;max-width:none !important;font-size:1em !important;height:${h || 'auto'};margin:0 auto;color:${formulaColor};fill:currentColor;`);
+              return `<section class="equation-scroll" aria-label="公式，可横向滚动查看" style="display:block;width:100%;font-size:1em;margin:16px 0;padding:7px 0 10px;box-sizing:border-box;overflow-x:auto;overflow-y:hidden;text-align:left;direction:ltr;-webkit-overflow-scrolling:touch;scrollbar-color:#91aab4 #e9eff1;scrollbar-width:thin;"><section style="display:inline-block;min-width:100%;padding:0 4px;box-sizing:border-box;white-space:nowrap;text-align:center;vertical-align:top;">${svg.outerHTML}</section></section>`;
             } else {
               /*
                * 行内公式也可能超过手机正文宽度。外层限制为所在段落的可用宽度，
                * SVG 继续保持固有宽度，溢出部分由该公式自身横向滚动而非被父级裁切。
                */
-              svg.setAttribute('style', `display:block !important;vertical-align:${vAlign} !important;height:${h || '1.35em'} !important;width:${w || 'auto'} !important;max-width:none !important;margin:0 !important;color:${formulaColor};fill:currentColor;`);
-              return `<span class="inline-equation-scroll" aria-label="行内公式，可横向滚动查看" style="display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle;line-height:1;white-space:nowrap;margin:0 1px;-webkit-overflow-scrolling:touch;scrollbar-color:#91aab4 #e9eff1;scrollbar-width:thin;">${svg.outerHTML}</span>`;
+              svg.setAttribute('style', `display:block !important;vertical-align:${vAlign} !important;height:${h || '1.35em'} !important;width:${w || 'auto'} !important;max-width:none !important;font-size:1em !important;margin:0 !important;color:${formulaColor};fill:currentColor;`);
+              return `<span class="inline-equation-scroll" aria-label="行内公式，可横向滚动查看" style="display:inline-block;max-width:100%;font-size:1em;overflow-x:auto;overflow-y:hidden;vertical-align:middle;line-height:1;white-space:nowrap;margin:0 1px;-webkit-overflow-scrolling:touch;scrollbar-color:#91aab4 #e9eff1;scrollbar-width:thin;">${svg.outerHTML}</span>`;
             }
           }
         } catch (e) {
@@ -522,12 +525,12 @@ print(paper_title)
         }
       }
 
-      return `<span style="font-family:${theme.fontProfile.formula};color:${theme.formula};font-style:italic;">${escapeHtml(cleanTex)}</span>`;
+      return `<span style="font-family:${theme.fontProfile.formula};font-size:1em;color:${theme.formula};font-style:italic;">${escapeHtml(cleanTex)}</span>`;
     }
 
     function renderDisplayFormula(rawTex, theme) {
       const content = renderFormulaNode(rawTex, true, theme);
-      return `<section style="box-sizing:border-box;margin:27px 0 30px;padding:9px 4px 10px;background:${theme.soft2};border-top:1px solid ${theme.border};border-bottom:1px solid ${theme.border};">${content}</section>`;
+      return `<section style="box-sizing:border-box;font-size:${articleFontSize}px;margin:25px 0 28px;padding:9px 4px 10px;background:${theme.soft2};border-top:1px solid ${theme.border};border-bottom:1px solid ${theme.border};">${content}</section>`;
     }
 
     function renderInline(text, theme) {
@@ -553,7 +556,7 @@ print(paper_title)
         const src = resolveImageSource(url);
         return hold(src
           ? `<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" style="display:inline-block;max-width:100%;max-height:180px;width:auto;height:auto;vertical-align:middle;margin:3px 4px;border:1px solid ${theme.emphasisRule};border-radius:5px;">`
-          : `<span style="color:${theme.muted};font-size:14px;">〔未找到图片：${escapeHtml(alt || url)}〕</span>`);
+          : `<span style="color:${theme.muted};font-size:13px;">〔未找到图片：${escapeHtml(alt || url)}〕</span>`);
       });
       str = str.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, url) => {
         const safeUrl = /^https?:\/\//i.test(url) || /^mailto:/i.test(url) ? url : '';
@@ -585,11 +588,11 @@ print(paper_title)
       const figure = safeUrl
         ? `<img src="${safeUrl}" alt="${label}" style="display:block;max-width:100%;height:auto;margin:0 auto;border:1px solid ${theme.emphasisRule};border-radius:8px;">`
         : `<section style="box-sizing:border-box;width:100%;height:142px;padding:24px 16px;background:${theme.soft2};border:1px solid ${theme.emphasisRule};border-radius:8px;text-align:center;">
-          <p style="margin:31px 0 0;color:${theme.accent};font-family:${theme.fontProfile.heading};font-size:16px;line-height:1.4;font-weight:700;letter-spacing:.04em;">未找到图片：${escapeHtml(url)}</p>
+          <p style="margin:31px 0 0;color:${theme.accent};font-family:${theme.fontProfile.heading};font-size:15px;line-height:1.4;font-weight:700;letter-spacing:.04em;">未找到图片：${escapeHtml(url)}</p>
         </section>`;
-      return `<section style="box-sizing:border-box;margin:29px 0 32px;padding:0;">
+      return `<section style="box-sizing:border-box;margin:27px 0 30px;padding:0;">
         ${figure}
-        <p style="margin:9px 0 0;color:${theme.muted};font-family:${theme.fontProfile.body};font-size:12px;line-height:1.7;letter-spacing:.02em;text-align:center;">${caption}${safeUrl ? '' : ` <span style="color:${theme.faint};">（请同时导入图片，或使用 HTTPS 地址）</span>`}</p>
+        <p style="margin:9px 0 0;color:${theme.muted};font-family:${theme.fontProfile.body};font-size:11px;line-height:1.7;letter-spacing:.02em;text-align:center;">${caption}${safeUrl ? '' : ` <span style="color:${theme.faint};">（请同时导入图片，或使用 HTTPS 地址）</span>`}</p>
       </section>`;
     }
 
@@ -623,14 +626,14 @@ print(paper_title)
             const rawValue = field[2].trim();
             const value = rawValue;
             const gap = index === fieldLines.length - 1 ? '0' : '10px';
-            return `<p style="margin:0 0 ${gap};color:${theme.muted};font-size:14px;line-height:1.86;text-align:left;word-break:break-word;overflow-wrap:anywhere;">
+            return `<p style="margin:0 0 ${gap};color:${theme.muted};font-size:13px;line-height:1.86;text-align:left;word-break:break-word;overflow-wrap:anywhere;">
               <strong style="color:${theme.text};font-weight:800;">${escapeHtml(label)}：</strong>${renderInline(value, theme)}
             </p>`;
           })
           .filter(Boolean);
         const nonFieldLines = contentLines.filter(line => line.trim() && !/^\s*\*\*[^*]+?\*\*\s*[：:]/.test(line));
         const fallback = nonFieldLines.length
-          ? `<p style="margin:12px 0 0;color:${theme.muted};font-size:14px;line-height:1.86;text-align:left;">${renderInline(nonFieldLines.join(' '), theme)}</p>`
+          ? `<p style="margin:12px 0 0;color:${theme.muted};font-size:13px;line-height:1.86;text-align:left;">${renderInline(nonFieldLines.join(' '), theme)}</p>`
           : '';
 
         return {
@@ -645,8 +648,8 @@ print(paper_title)
       return {
         nextIndex: i,
         blockHtml: `<section style="box-sizing:border-box;margin:23px 0;padding:18px 18px 18px 20px;background:${config.background};border-top:1px solid ${theme.border};border-bottom:1px solid ${theme.border};border-left:4px solid ${config.accent};">
-          <p style="margin:0 0 6px;color:${config.accent};font-size:12px;line-height:1.55;font-weight:800;letter-spacing:.04em;">${config.label}</p>
-          <p style="margin:0;color:${theme.muted};font-size:14px;line-height:1.86;text-align:left;">${renderInline(body, theme)}</p>
+          <p style="margin:0 0 6px;color:${config.accent};font-size:11px;line-height:1.55;font-weight:800;letter-spacing:.04em;">${config.label}</p>
+          <p style="margin:0;color:${theme.muted};font-size:13px;line-height:1.86;text-align:left;">${renderInline(body, theme)}</p>
         </section>`
       };
     }
@@ -660,27 +663,27 @@ print(paper_title)
     }
 
     function renderCover(content, theme) {
-      const common = `box-sizing:border-box;margin:0 0 34px;overflow:hidden;`;
-      const title = (extra = '', fontSize = 33) => `<h1 style="margin:0;color:${theme.coverText};font-family:${theme.fontProfile.heading};font-size:${fontSize}px;line-height:1.36;font-weight:${theme.heading === 'serif' ? 600 : 800};letter-spacing:${theme.heading === 'serif' ? '-.025em' : '-.045em'};overflow-wrap:anywhere;${extra}">${content}</h1>`;
-      const eyebrow = (color = theme.coverSub) => `<p style="margin:0;color:${color};font-family:${sans};font-size:10px;line-height:1.5;font-weight:800;letter-spacing:.18em;">MARKDOWN  /  ARTICLE</p>`;
+      const common = `box-sizing:border-box;margin:0 0 32px;overflow:hidden;`;
+      const title = (extra = '', fontSize = 32) => `<h1 style="margin:0;color:${theme.coverText};font-family:${theme.fontProfile.heading};font-size:${fontSize}px;line-height:1.36;font-weight:${theme.heading === 'serif' ? 600 : 800};letter-spacing:${theme.heading === 'serif' ? '-.025em' : '-.045em'};overflow-wrap:anywhere;${extra}">${content}</h1>`;
+      const eyebrow = (color = theme.coverSub) => `<p style="margin:0;color:${color};font-family:${sans};font-size:9px;line-height:1.5;font-weight:800;letter-spacing:.18em;">MARKDOWN  /  ARTICLE</p>`;
       switch (theme.layout) {
-        case 'archive': return `<section style="${common}padding:20px 0 0;border-top:5px double ${theme.accent};"><section style="display:flex;justify-content:space-between;margin:0 0 28px;">${eyebrow(theme.accent)}<span style="color:${theme.accent};font:700 12px ${sans};">文章排版</span></section><h1 style="margin:0 0 30px;color:${theme.accent};font-family:${serif};font-size:36px;line-height:1.36;font-weight:600;letter-spacing:-.03em;overflow-wrap:anywhere;">${content}</h1><section style="height:6px;background:${theme.accent};width:68px;"></section><p style="margin:11px 0 0;color:${theme.muted};font:11px/1.5 ${sans};letter-spacing:.12em;">IDEAS  ·  NOTES  ·  STORIES</p></section>`;
-        case 'dispatch': return `<section style="${common}background:${theme.coverBg};padding:0;"><section style="padding:24px 25px 29px;"><section style="display:flex;justify-content:space-between;gap:8px;margin:0 0 32px;">${eyebrow()}<span style="color:${theme.coverText};font:700 11px ${sans};">文章排版</span></section>${title()}</section><section style="padding:10px 25px;background:${theme.coverText};color:${theme.coverBg};font:800 10px/1.5 ${sans};letter-spacing:.16em;">MARKDOWN / ARTICLE</section></section>`;
-        case 'signal': return `<section style="${common}background:${theme.coverBg};padding:25px 28px 29px;border-top:7px solid ${theme.coverText};">${eyebrow(theme.coverText)}<p style="margin:22px 0 10px;color:${theme.coverSub};font:700 10px ${sans};letter-spacing:.18em;">文章排版  /  内容展示</p>${title('', 30)}<p aria-hidden="true" style="margin:25px 0 0;color:${theme.coverText};font-family:Arial,sans-serif;font-size:19px;font-weight:900;line-height:1;letter-spacing:0;">━━━━　━　━</p></section>`;
-        case 'electric': return `<section style="${common}background:${theme.coverBg};padding:23px 25px 28px;"><section style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">${eyebrow('#fff9fc')}<span style="color:${theme.coverText};font:900 52px/.8 ${sans};letter-spacing:-.12em;">R</span></section><section style="margin:28px 0 0;padding:8px 0 0;border-top:3px solid ${theme.coverText};">${title('text-transform:none;')}</section><p style="margin:23px 0 0;color:#fff9fc;font:800 10px ${sans};letter-spacing:.16em;">IDEAS  /  NOTES  /  STORIES  ↗</p></section>`;
-        case 'noir': return `<section style="${common}background:${theme.coverBg};padding:0;"><section style="display:flex;justify-content:space-between;padding:10px 25px;background:${theme.coverText};color:${theme.coverBg};font:800 10px ${sans};letter-spacing:.18em;"><span>MARKDOWN / ARTICLE</span><span>文章排版</span></section><section style="padding:29px 25px 28px;">${title()}<p style="margin:25px 0 0;color:#fff;font:700 11px ${sans};letter-spacing:.08em;">IDEAS  ·  NOTES  ·  STORIES</p></section></section>`;
-        case 'nocturne': return `<section style="${common}background:${theme.coverBg};padding:25px 27px 30px;"><section style="display:flex;justify-content:space-between;margin-bottom:36px;">${eyebrow(theme.coverText)}<span style="color:${theme.coverText};font:700 11px ${sans};">文章排版</span></section>${title()}<p style="margin:29px 0 0;padding-top:9px;border-top:1px solid ${theme.coverText};color:${theme.coverText};font:700 10px ${sans};letter-spacing:.16em;">ARTICLE NOTES  /  IDEAS</p></section>`;
-        case 'field': return `<section style="${common}background:${theme.coverBg};padding:21px 26px 27px;border-bottom:9px solid ${theme.coverText};"><section style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:36px;">${eyebrow(theme.coverText)}<span style="color:${theme.coverText};font:900 31px/.9 ${sans};">R</span></section>${title()}<p style="margin:24px 0 0;color:${theme.coverText};font:800 10px ${sans};letter-spacing:.16em;">IDEAS  /  NOTES  /  STORIES</p></section>`;
-        case 'prism': return `<section style="${common}background:${theme.coverBg};padding:0;border-left:7px solid ${theme.coverText};"><section style="padding:21px 25px 28px;">${eyebrow(theme.coverText)}<p style="margin:34px 0 9px;color:${theme.coverText};font:800 11px ${sans};letter-spacing:.17em;">文章排版  /  内容展示</p>${title()}</section><section style="padding:10px 25px;background:${theme.coverText};color:${theme.coverBg};font:800 10px ${sans};letter-spacing:.16em;">FROM NOTES TO STORIES</section></section>`;
-        default: return `<section style="${common}background:${theme.coverBg};padding:23px 26px 26px;border-bottom:8px solid ${theme.coverText};"><section style="display:flex;justify-content:space-between;margin-bottom:29px;">${eyebrow(theme.coverText)}<span style="color:${theme.coverText};font:800 12px ${sans};">文章排版</span></section><section style="padding:16px 0 0;border-top:2px solid ${theme.coverText};">${title()}</section><p style="margin:24px 0 0;color:${theme.coverText};font:800 10px ${sans};letter-spacing:.17em;">IDEAS  /  NOTES  /  STORIES  →</p></section>`;
+        case 'archive': return `<section style="${common}padding:20px 0 0;border-top:5px double ${theme.accent};"><section style="display:flex;justify-content:space-between;margin:0 0 28px;">${eyebrow(theme.accent)}<span style="color:${theme.accent};font:700 11px ${sans};">文章排版</span></section><h1 style="margin:0 0 30px;color:${theme.accent};font-family:${serif};font-size:35px;line-height:1.36;font-weight:600;letter-spacing:-.03em;overflow-wrap:anywhere;">${content}</h1><section style="height:6px;background:${theme.accent};width:68px;"></section><p style="margin:11px 0 0;color:${theme.muted};font:10px/1.5 ${sans};letter-spacing:.12em;">IDEAS  ·  NOTES  ·  STORIES</p></section>`;
+        case 'dispatch': return `<section style="${common}background:${theme.coverBg};padding:0;"><section style="padding:24px 25px 29px;"><section style="display:flex;justify-content:space-between;gap:8px;margin:0 0 32px;">${eyebrow()}<span style="color:${theme.coverText};font:700 10px ${sans};">文章排版</span></section>${title()}</section><section style="padding:10px 25px;background:${theme.coverText};color:${theme.coverBg};font:800 9px/1.5 ${sans};letter-spacing:.16em;">MARKDOWN / ARTICLE</section></section>`;
+        case 'signal': return `<section style="${common}background:${theme.coverBg};padding:25px 28px 29px;border-top:7px solid ${theme.coverText};">${eyebrow(theme.coverText)}<p style="margin:22px 0 10px;color:${theme.coverSub};font:700 9px ${sans};letter-spacing:.18em;">文章排版  /  内容展示</p>${title('', 29)}<p aria-hidden="true" style="margin:25px 0 0;color:${theme.coverText};font-family:Arial,sans-serif;font-size:18px;font-weight:900;line-height:1;letter-spacing:0;">━━━━　━　━</p></section>`;
+        case 'electric': return `<section style="${common}background:${theme.coverBg};padding:23px 25px 28px;"><section style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">${eyebrow('#fff9fc')}<span style="color:${theme.coverText};font:900 51px/.8 ${sans};letter-spacing:-.12em;">R</span></section><section style="margin:28px 0 0;padding:8px 0 0;border-top:3px solid ${theme.coverText};">${title('text-transform:none;')}</section><p style="margin:23px 0 0;color:#fff9fc;font:800 9px ${sans};letter-spacing:.16em;">IDEAS  /  NOTES  /  STORIES  ↗</p></section>`;
+        case 'noir': return `<section style="${common}background:${theme.coverBg};padding:0;"><section style="display:flex;justify-content:space-between;padding:10px 25px;background:${theme.coverText};color:${theme.coverBg};font:800 9px ${sans};letter-spacing:.18em;"><span>MARKDOWN / ARTICLE</span><span>文章排版</span></section><section style="padding:29px 25px 28px;">${title()}<p style="margin:25px 0 0;color:#fff;font:700 10px ${sans};letter-spacing:.08em;">IDEAS  ·  NOTES  ·  STORIES</p></section></section>`;
+        case 'nocturne': return `<section style="${common}background:${theme.coverBg};padding:25px 27px 30px;"><section style="display:flex;justify-content:space-between;margin-bottom:36px;">${eyebrow(theme.coverText)}<span style="color:${theme.coverText};font:700 10px ${sans};">文章排版</span></section>${title()}<p style="margin:29px 0 0;padding-top:9px;border-top:1px solid ${theme.coverText};color:${theme.coverText};font:700 9px ${sans};letter-spacing:.16em;">ARTICLE NOTES  /  IDEAS</p></section>`;
+        case 'field': return `<section style="${common}background:${theme.coverBg};padding:21px 26px 27px;border-bottom:9px solid ${theme.coverText};"><section style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:36px;">${eyebrow(theme.coverText)}<span style="color:${theme.coverText};font:900 30px/.9 ${sans};">R</span></section>${title()}<p style="margin:24px 0 0;color:${theme.coverText};font:800 9px ${sans};letter-spacing:.16em;">IDEAS  /  NOTES  /  STORIES</p></section>`;
+        case 'prism': return `<section style="${common}background:${theme.coverBg};padding:0;border-left:7px solid ${theme.coverText};"><section style="padding:21px 25px 28px;">${eyebrow(theme.coverText)}<p style="margin:34px 0 9px;color:${theme.coverText};font:800 10px ${sans};letter-spacing:.17em;">文章排版  /  内容展示</p>${title()}</section><section style="padding:10px 25px;background:${theme.coverText};color:${theme.coverBg};font:800 9px ${sans};letter-spacing:.16em;">FROM NOTES TO STORIES</section></section>`;
+        default: return `<section style="${common}background:${theme.coverBg};padding:23px 26px 26px;border-bottom:8px solid ${theme.coverText};"><section style="display:flex;justify-content:space-between;margin-bottom:29px;">${eyebrow(theme.coverText)}<span style="color:${theme.coverText};font:800 11px ${sans};">文章排版</span></section><section style="padding:16px 0 0;border-top:2px solid ${theme.coverText};">${title()}</section><p style="margin:24px 0 0;color:${theme.coverText};font:800 9px ${sans};letter-spacing:.17em;">IDEAS  /  NOTES  /  STORIES  →</p></section>`;
       }
     }
 
     function renderH2(content, theme) {
-      const base = `box-sizing:border-box;margin:${theme.density.h2Top} 0 ${theme.density.h2Gap};font-family:${theme.fontProfile.heading};font-size:22px;line-height:1.48;font-weight:${theme.heading === 'serif' ? 600 : 800};letter-spacing:-.02em;overflow-wrap:anywhere;`;
+      const base = `box-sizing:border-box;margin:${theme.density.h2Top} 0 ${theme.density.h2Gap};font-family:${theme.fontProfile.heading};font-size:21px;line-height:1.48;font-weight:${theme.heading === 'serif' ? 600 : 800};letter-spacing:-.02em;overflow-wrap:anywhere;`;
       const chapter = content.match(/^(\d{2})\s*[｜|]\s*(.+)$/);
       if (chapter) {
-        return `<h2 style="${base}display:flex;align-items:flex-start;gap:11px;padding:0 0 13px;color:${theme.text};border-bottom:1px solid ${theme.emphasisRule};"><span style="box-sizing:border-box;display:inline-block;flex:none;min-width:34px;padding:4px 6px;border-radius:3px;background:${theme.accent};color:${theme.shell};font-family:${sans};font-size:15px;line-height:1.45;font-weight:800;letter-spacing:0;text-align:center;">${chapter[1]}</span><span style="display:block;min-width:0;">${chapter[2]}</span></h2>`;
+        return `<h2 style="${base}display:flex;align-items:flex-start;gap:11px;padding:0 0 13px;color:${theme.text};border-bottom:1px solid ${theme.emphasisRule};"><span style="box-sizing:border-box;display:inline-block;flex:none;min-width:34px;padding:4px 6px;border-radius:3px;background:${theme.accent};color:${theme.shell};font-family:${sans};font-size:14px;line-height:1.45;font-weight:800;letter-spacing:0;text-align:center;">${chapter[1]}</span><span style="display:block;min-width:0;">${chapter[2]}</span></h2>`;
       }
       if (theme.layout === 'noir') return `<h2 style="${base}padding:11px 13px;background:#111;color:#ffff00;border-left:6px solid #ffff00;">${content}</h2>`;
       if (theme.layout === 'electric') return `<h2 style="${base}padding:0 0 9px;color:${theme.accent};border-bottom:5px solid #b7fe01;">${content}</h2>`;
@@ -696,14 +699,14 @@ print(paper_title)
     function renderH3(content, theme) {
       const subsection = content.match(/^(\d+(?:\.\d+)+)\s*[｜|：:]?\s*(.+)$/);
       if (subsection) {
-        return `<h3 style="box-sizing:border-box;display:flex;align-items:flex-start;gap:10px;margin:32px 0 16px;padding:0 0 0 11px;border-left:3px solid ${theme.accent};color:${theme.text};font-family:${theme.fontProfile.heading};font-size:17px;line-height:1.5;font-weight:${theme.heading === 'serif' ? 600 : 700};letter-spacing:.005em;"><span style="display:inline-block;flex:none;margin-top:2px;padding:2px 8px;border-radius:3px;background:${theme.soft};color:${theme.accent};font-family:${sans};font-size:12px;line-height:1.5;font-weight:800;letter-spacing:0;">${subsection[1]}</span><span style="display:block;min-width:0;">${subsection[2]}</span></h3>`;
+        return `<h3 style="box-sizing:border-box;display:flex;align-items:flex-start;gap:10px;margin:30px 0 15px;padding:0 0 0 11px;border-left:3px solid ${theme.accent};color:${theme.text};font-family:${theme.fontProfile.heading};font-size:16px;line-height:1.5;font-weight:${theme.heading === 'serif' ? 600 : 700};letter-spacing:.005em;"><span style="display:inline-block;flex:none;margin-top:2px;padding:2px 8px;border-radius:3px;background:${theme.soft};color:${theme.accent};font-family:${sans};font-size:11px;line-height:1.5;font-weight:800;letter-spacing:0;">${subsection[1]}</span><span style="display:block;min-width:0;">${subsection[2]}</span></h3>`;
       }
       const mark = ['archive','field','nocturne','prism'].includes(theme.layout) ? '◆' : '—';
-      return `<h3 style="margin:30px 0 12px;color:${theme.accent2};font-family:${theme.fontProfile.reading};font-size:17px;line-height:1.55;font-weight:600;letter-spacing:.01em;"><span style="margin-right:8px;color:${theme.accent};">${mark}</span>${content}</h3>`;
+      return `<h3 style="margin:28px 0 11px;color:${theme.accent2};font-family:${theme.fontProfile.reading};font-size:16px;line-height:1.55;font-weight:600;letter-spacing:.01em;"><span style="margin-right:8px;color:${theme.accent};">${mark}</span>${content}</h3>`;
     }
 
     function renderH4(content, theme) {
-      return `<h4 style="margin:24px 0 10px;color:${theme.accent2};font-family:${theme.fontProfile.reading};font-size:15px;line-height:1.55;font-weight:600;letter-spacing:.01em;">${content}</h4>`;
+      return `<h4 style="margin:22px 0 9px;color:${theme.accent2};font-family:${theme.fontProfile.reading};font-size:14px;line-height:1.55;font-weight:600;letter-spacing:.01em;">${content}</h4>`;
     }
 
     function renderQuote(content, theme) {
@@ -719,7 +722,7 @@ print(paper_title)
         sunprint:  { background:theme.soft2, rule:`border-left:5px solid ${theme.coverText};`, mark:theme.accent }
       };
       const treatment = treatments[theme.layout];
-      return `<blockquote style="box-sizing:border-box;margin:27px 0 30px;padding:18px 20px 21px;background:${treatment.background};${treatment.rule}color:${theme.text};text-align:left;"><p aria-hidden="true" style="margin:0 0 1px;color:${treatment.mark};font-family:Georgia,serif;font-size:34px;line-height:1;font-weight:700;">“</p><p style="margin:0;color:${theme.bodyInk};font-family:${theme.fontProfile.reading};font-size:14px;line-height:1.86;font-weight:400;letter-spacing:.012em;">${content}</p></blockquote>`;
+      return `<blockquote style="box-sizing:border-box;margin:25px 0 28px;padding:18px 20px 21px;background:${treatment.background};${treatment.rule}color:${theme.text};text-align:left;"><p aria-hidden="true" style="margin:0 0 1px;color:${treatment.mark};font-family:Georgia,serif;font-size:33px;line-height:1;font-weight:700;">“</p><p style="margin:0;color:${theme.bodyInk};font-family:${theme.fontProfile.reading};font-size:13px;line-height:1.86;font-weight:400;letter-spacing:.012em;">${content}</p></blockquote>`;
     }
 
     function renderTable(lines, theme) {
@@ -746,15 +749,15 @@ print(paper_title)
         const cardRows = body.map((row, index) => {
           const divider = index === body.length - 1 ? '' : `border-bottom:1px solid ${theme.border};`;
           return `<section style="box-sizing:border-box;margin:0;padding:9px 0 10px;${divider}">
-            <p style="margin:0 0 3px;color:${theme.muted};font-family:${sans};font-size:11px;line-height:1.4;font-weight:750;letter-spacing:.05em;">${renderInline(row[0].replace(/^\*\*([^*]+)\*\*$/, '$1'), theme)}</p>
-            <p style="margin:0;color:${theme.bodyInk};font-family:${sans};font-size:14px;line-height:1.72;text-align:left;word-break:break-word;overflow-wrap:anywhere;">${renderInline(row[1], theme)}</p>
+            <p style="margin:0 0 3px;color:${theme.muted};font-family:${sans};font-size:10px;line-height:1.4;font-weight:750;letter-spacing:.05em;">${renderInline(row[0].replace(/^\*\*([^*]+)\*\*$/, '$1'), theme)}</p>
+            <p style="margin:0;color:${theme.bodyInk};font-family:${sans};font-size:13px;line-height:1.72;text-align:left;word-break:break-word;overflow-wrap:anywhere;">${renderInline(row[1], theme)}</p>
           </section>`;
         }).join('');
 
         return `<section aria-label="${escapeHtml(header.join(' '))}" style="box-sizing:border-box;width:100%;margin:14px 0 32px;background:${theme.shell};border-top:1px solid ${theme.border};border-bottom:1px solid ${theme.border};overflow:hidden;">${cardRows}</section>`;
       }
 
-      const tableStyle = `width:100%;margin:0;border-collapse:separate;border-spacing:0;table-layout:fixed;color:${theme.text};font-size:14px;border-top:3px solid ${theme.accent};border-bottom:1px solid ${theme.border};overflow:hidden;`;
+      const tableStyle = `width:100%;margin:0;border-collapse:separate;border-spacing:0;table-layout:fixed;color:${theme.text};font-size:13px;border-top:3px solid ${theme.accent};border-bottom:1px solid ${theme.border};overflow:hidden;`;
       const thStyle = `padding:${padding};background:${theme.tableHead};border:0;border-bottom:1px solid ${theme.border};color:${theme.accent};font-weight:700;text-align:left;line-height:1.5;word-break:break-word;overflow-wrap:anywhere;`;
 
       return `<div style="width:100%;margin:18px 0 26px;"><table style="${tableStyle}">
@@ -840,7 +843,7 @@ print(paper_title)
 
         const colorStyle = level > 0 ? `color:${theme.muted};` : `color:${theme.bodyInk};`;
 
-        return `<p style="margin:0 0 8px ${indentLeft}em;padding:0;font-family:${theme.fontProfile.reading};font-size:14px;font-weight:400;line-height:1.9;letter-spacing:.012em;${colorStyle}text-align:left;">
+        return `<p style="margin:0 0 8px ${indentLeft}em;padding:0;font-family:${theme.fontProfile.reading};font-size:13px;font-weight:400;line-height:1.9;letter-spacing:.012em;${colorStyle}text-align:left;">
           <strong style="color:${theme.accent2};font-weight:700;margin-right:5px;display:inline;">${marker}</strong>${renderInline(item.text, theme)}
         </p>`;
       }).join('');
@@ -897,7 +900,7 @@ print(paper_title)
           if (/^(math|tex|latex)$/i.test(lang)) {
             blocks.push(renderDisplayFormula(code.join('\n'), theme));
           } else {
-            blocks.push(`<section style="box-sizing:border-box;margin:21px 0 26px;background:${theme.codeBg};border-top:3px solid ${theme.accent};"><p style="margin:0;padding:11px 15px 0;color:${theme.codeText};font-family:${theme.fontProfile.mono};font-size:10px;line-height:1.4;font-weight:700;letter-spacing:.13em;">CODE / ${escapeHtml((lang || 'TEXT').toUpperCase())}</p><pre style="margin:0;padding:${theme.density.codePadding};color:${theme.codeText};overflow-x:auto;overflow-y:hidden;font-family:${theme.fontProfile.mono};font-size:13px;line-height:1.72;"><code>${escapeHtml(code.join('\n'))}</code></pre></section>`);
+            blocks.push(`<section style="box-sizing:border-box;margin:20px 0 24px;background:${theme.codeBg};border-top:3px solid ${theme.accent};"><p style="margin:0;padding:11px 15px 0;color:${theme.codeText};font-family:${theme.fontProfile.mono};font-size:9px;line-height:1.4;font-weight:700;letter-spacing:.13em;">CODE / ${escapeHtml((lang || 'TEXT').toUpperCase())}</p><pre style="margin:0;padding:${theme.density.codePadding};color:${theme.codeText};overflow-x:auto;overflow-y:hidden;font-family:${theme.fontProfile.mono};font-size:12px;line-height:1.72;"><code>${escapeHtml(code.join('\n'))}</code></pre></section>`);
           }
           continue;
         }
@@ -977,7 +980,7 @@ print(paper_title)
 
     function renderArticle(markdown, theme) {
       const content = parseMarkdown(markdown, theme);
-      return `<section id="rendered-article" style="box-sizing:border-box;max-width:100%;margin:0 auto;padding:${theme.density.articlePadding};background:${theme.shell};color:${theme.text};font-family:${theme.fontProfile.body};line-height:${theme.density.lineHeight};font-size:15px;letter-spacing:0;text-align:left;overflow-wrap:anywhere;">
+      return `<section id="rendered-article" style="box-sizing:border-box;max-width:100%;margin:0 auto;padding:${theme.density.articlePadding};background:${theme.shell};color:${theme.text};font-family:${theme.fontProfile.body};line-height:${theme.density.lineHeight};font-size:${articleFontSize}px;letter-spacing:0;text-align:left;overflow-wrap:anywhere;-webkit-text-size-adjust:100%;text-size-adjust:100%;">
         ${content}
       </section>`;
     }

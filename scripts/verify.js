@@ -39,14 +39,14 @@ for (const spec of api.themeSpecs) {
   assert.ok(!rendered.includes('CODE / MATH'), `${spec.key}: math fence displayed as code`);
   assert.ok(!rendered.includes('undefined'), `${spec.key}: undefined style value`);
   assert.ok(rendered.includes(theme.accent), `${spec.key}: theme accent missing`);
-  const saved = fs.readFileSync(path.join(root, 'themes', `${spec.number}-${spec.key}.html`), 'utf8').trim();
+  const saved = fs.readFileSync(path.join(root, 'themes', `${spec.number}-${spec.key}.html`), 'utf8').replace(/\r\n/g, '\n').trim();
   assert.equal(saved, rendered.trim(), `${spec.key}: fragment out of date; run npm run build`);
 }
 
 const theme = api.themes.archive;
 const coralCover = api.renderArticle('# 论文分享｜Attention Is All You Need', api.themes.coral);
-assert.match(coralCover, /font-size:30px/);
-assert.ok(!/font-size:33px;[^\"]*font-size:30px/.test(coralCover), 'Coral Signal title has conflicting font sizes');
+assert.match(coralCover, /font-size:29px/);
+assert.ok(!/font-size:32px;[^\"]*font-size:29px/.test(coralCover), 'Coral Signal title has conflicting font sizes');
 assert.match(coralCover, /━━━━　━　━/, 'Coral Signal decoration should survive rich-text copying');
 assert.ok(!/<i style="width:52px;height:5px/.test(coralCover), 'Coral Signal still uses empty decorative elements');
 api.imageAssets.clear();
