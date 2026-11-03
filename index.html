@@ -4,21 +4,35 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>墨笺舟 · 微信公众号 Markdown 排版</title>
-  <!-- MathJax 3 独立矢量引擎：禁用缓存以保证每个公式自包含独立 Path -->
+  <!-- 本地完整 MathJax：预载粗体符号，公式 SVG 自包含，不依赖 CDN。 -->
   <script>
-    window.MathJax = {
-      startup: { typeset: false },
-      tex: {
-        inlineMath: [['$', '$']],
-        displayMath: [['$$', '$$']],
-        processEscapes: true
-      },
-      svg: {
-        fontCache: 'none'
-      }
-    };
+    window.mathJaxReady = new Promise((resolve, reject) => {
+      window.mathJaxLoadFailed = () => reject(new Error('MathJax failed to load'));
+      window.MathJax = {
+        startup: {
+          typeset: false,
+          ready() {
+            try {
+              MathJax.startup.defaultReady();
+              MathJax.startup.promise.then(resolve, reject);
+            } catch (error) {
+              reject(error);
+            }
+          }
+        },
+        tex: {
+          inlineMath: [['$', '$']],
+          displayMath: [['$$', '$$']],
+          processEscapes: true,
+          packages: { '[+]': ['boldsymbol'], '[-]': ['noundefined'] }
+        },
+        svg: {
+          fontCache: 'none'
+        }
+      };
+    });
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
+  <script src="vendor/mathjax/tex-svg-full.js" id="MathJax-script" defer onerror="window.mathJaxLoadFailed()"></script>
   <style>
     * { box-sizing: border-box; }
     :root {
@@ -525,7 +539,7 @@ print(paper_title)
         }
       }
 
-      return `<span style="font-family:${theme.fontProfile.formula};font-size:1em;color:${theme.formula};font-style:italic;">${escapeHtml(cleanTex)}</span>`;
+      return `<span data-math-pending="true" style="font-family:${theme.fontProfile.formula};font-size:1em;color:${theme.formula};font-style:italic;">${escapeHtml(cleanTex)}</span>`;
     }
 
     function renderDisplayFormula(rawTex, theme) {
@@ -1025,8 +1039,32 @@ print(paper_title)
       }, 3200);
     }
 
+    async function prepareArticleForExport() {
+      let article = document.getElementById('rendered-article');
+      if (article && article.querySelector('[data-math-pending]')) {
+        setStatus('正在排版公式…');
+        try {
+          await window.mathJaxReady;
+        } catch (_) {
+          setStatus('公式加载失败，请刷新页面或重新下载完整项目');
+          return null;
+        }
+        render();
+        article = document.getElementById('rendered-article');
+        if (article && article.querySelector('[data-math-pending]')) {
+          setStatus('部分公式未能排版，请检查公式写法后重试');
+          return null;
+        }
+      }
+      if (article && article.querySelector('[data-mjx-error]')) {
+        setStatus('部分公式存在错误，请检查公式写法后重试');
+        return null;
+      }
+      return article;
+    }
+
     async function copyArticle() {
-      const article = document.getElementById('rendered-article');
+      const article = await prepareArticleForExport();
       if (!article) return;
 
       const html = article.outerHTML;
@@ -1068,8 +1106,8 @@ print(paper_title)
     }
 
     document.getElementById('copy-button').addEventListener('click', copyArticle);
-    document.getElementById('download-button').addEventListener('click', () => {
-      const article = document.getElementById('rendered-article');
+    document.getElementById('download-button').addEventListener('click', async () => {
+      const article = await prepareArticleForExport();
       if (!article) return;
       const page = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>排版文章</title></head><body style="margin:0;background:#fff;">${article.outerHTML}</body></html>`;
       const url = URL.createObjectURL(new Blob([page], { type: 'text/html;charset=utf-8' }));
@@ -1180,14 +1218,8 @@ print(paper_title)
     try { currentThemeKey = localStorage.getItem('markdown-studio-theme') || 'archive'; } catch (_) {}
     selectTheme(themes[currentThemeKey] ? currentThemeKey : 'archive');
 
-    window.addEventListener('load', () => {
-      const checkMathJax = setInterval(() => {
-        if (window.MathJax && window.MathJax.tex2svg) {
-          clearInterval(checkMathJax);
-          render();
-        }
-      }, 50);
-      setTimeout(() => clearInterval(checkMathJax), 4000);
+    window.mathJaxReady.then(render, () => {
+      setStatus('公式加载失败，请刷新页面或重新下载完整项目');
     });
   </script>
 </body>

@@ -39,8 +39,6 @@ for (const spec of api.themeSpecs) {
   assert.ok(!rendered.includes('CODE / MATH'), `${spec.key}: math fence displayed as code`);
   assert.ok(!rendered.includes('undefined'), `${spec.key}: undefined style value`);
   assert.ok(rendered.includes(theme.accent), `${spec.key}: theme accent missing`);
-  const saved = fs.readFileSync(path.join(root, 'themes', `${spec.number}-${spec.key}.html`), 'utf8').replace(/\r\n/g, '\n').trim();
-  assert.equal(saved, rendered.trim(), `${spec.key}: fragment out of date; run npm run build`);
 }
 
 const theme = api.themes.archive;

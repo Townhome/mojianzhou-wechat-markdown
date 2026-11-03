@@ -6,9 +6,12 @@
   "license": "MIT",
   "scripts": {
     "build": "node scripts/generate.js",
-    "test": "node scripts/verify.js"
+    "test": "node scripts/verify.js && node scripts/verify-math.js"
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "jsdom": "26.1.0"
   }
 }

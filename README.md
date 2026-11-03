@@ -4,7 +4,7 @@
 
 九套主题的 Markdown 文字统一缩小 1px：正文 14px，列表、引用、表格及卡片正文 13px，代码 12px，图注 11px；二至四级标题分别为 21px、16px、14px，封面标题随主题为 29–35px。各主题保留原有行高比例，并同步收紧段间距和标题留白；这些样式会同时用于预览、复制到公众号的正文及下载的 HTML。
 
-独立公式与正文共用 14px 字号基准，行内公式随所在段落、引用、列表或表格的字号缩放。MathJax 生成的 SVG 公式与未加载 MathJax 时的文本回退均使用同一规则；超宽公式仍可在公式区域内横向滚动。
+独立公式与正文共用 14px 字号基准，行内公式随所在段落、引用、列表或表格的字号缩放。公式引擎随项目本地提供，支持 `\boldsymbol{\mu}`、`\mathbf{z}` 等写法；超宽公式仍可在公式区域内横向滚动。引擎初始化完成后会自动刷新预览，复制和下载会等待公式排版完成。
 
 九套主题的正文左右内边距统一为容器宽度的 2%，在手机上增加文字可用宽度，同时保留适当的两侧留白。
 
@@ -118,15 +118,17 @@ examples/images/transfomer.jpg  原论文结构图；也是上传文件夹的演
 themes/               九套主题生成的独立 HTML 片段
 scripts/generate.js   将示例图片嵌入编辑器，并生成示例、片段和主题对照页
 scripts/verify.js     检查渲染与图片处理
+scripts/verify-math.js 使用真实 MathJax 检查公式、初始化与复制/下载
+vendor/mathjax/       本地公式引擎及其 Apache-2.0 许可证
 ```
 
-普通使用不需要 Node.js。仅在修改渲染器或重新生成样张时，安装 Node.js 18 或更新版本，然后在项目目录运行 `npm run build` 和 `npm test`。项目没有 npm 运行时依赖。
+普通使用不需要 Node.js。仅在修改渲染器或重新生成样张时，安装 Node.js 18 或更新版本，然后在项目目录运行 `npm ci`、`npm run build` 和 `npm test`。项目没有 npm 运行时依赖；开发依赖仅用于在模拟浏览器文档中运行真实公式引擎的自动检查。
 
 如果替换 `examples/images/transfomer.jpg`，请运行 `npm run build`，以更新 `index.html` 内嵌的默认示例图和九套主题片段。
 
 ## 技术与隐私
 
-编辑器的 Markdown 解析和排版在浏览器本地完成，不会上传正文。在线图片由浏览器直接向图片网站请求；公式使用从 jsDelivr 加载的 MathJax，断网时显示原始 TeX 文本。若要完全离线使用公式，需要自行托管 MathJax 并调整 [index.html](./index.html) 中的脚本地址。
+编辑器的 Markdown 解析和排版在浏览器本地完成，不会上传正文。在线图片由浏览器直接向图片网站请求；公式使用项目内置的 MathJax 3.2.2 完整 TeX/SVG 组件，常用公式及 `boldsymbol` 扩展无需访问 CDN。离线使用时，请保留 `vendor/mathjax` 目录。下载的文章 HTML 中，已排版的公式是自包含的 SVG，无需额外加载公式引擎。
 
 解析器支持上表和示例中的常用写法，不保证覆盖全部 CommonMark 扩展。原始 HTML 标签会作为普通文字显示，避免把不受信任的 HTML 直接插入预览。
 
@@ -134,4 +136,4 @@ scripts/verify.js     检查渲染与图片处理
 
 ## 开源许可
 
-项目代码使用 [MIT License](./LICENSE)。`examples/images/transfomer.jpg` 来自 Vaswani 等人的 *Attention Is All You Need*，是用户提供的原论文 Figure 1；它**不属于项目代码的 MIT 授权范围**。公开发布仓库前，请确认这张图的再分发许可并保留来源说明。外部图片和通过 CDN 加载的 MathJax 遵循各自的许可或使用条款。
+项目代码使用 [MIT License](./LICENSE)。`examples/images/transfomer.jpg` 来自 Vaswani 等人的 *Attention Is All You Need*，是用户提供的原论文 Figure 1；它**不属于项目代码的 MIT 授权范围**。公开发布仓库前，请确认这张图的再分发许可并保留来源说明。外部图片遵循各自的许可或使用条款；内置 MathJax 使用 [Apache License 2.0](./vendor/mathjax/LICENSE)。

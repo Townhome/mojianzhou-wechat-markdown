@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const { JSDOM } = require('jsdom');
 
 const root = path.resolve(__dirname, '..');
 const localImage = fs.readFileSync(path.join(root, 'examples', 'images', 'transfomer.jpg'));
@@ -15,34 +16,44 @@ const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)];
 const application = scripts.at(-1)?.[1];
 if (!application) throw new Error('Application script not found');
 const renderer = application.split('    const themeGrid =')[0];
-const { themeSpecs, themes, renderArticle, sampleMarkdown, imageAssets } = vm.runInNewContext(
-  `${renderer}\n({ themeSpecs, themes, renderArticle, sampleMarkdown, imageAssets })`,
-  { window: {}, URL, console }
-);
-if (imageAssets.get('images/transfomer.jpg') !== dataUrl) throw new Error('Bundled image not initialized');
+const dom = new JSDOM('<!doctype html><html><body></body></html>', { runScripts: 'outside-only', url: 'https://example.test/' });
+dom.window.eval(scripts[0][1]);
+dom.window.eval(fs.readFileSync(path.join(root, 'vendor/mathjax/tex-svg-full.js'), 'utf8'));
 
-const examples = path.join(root, 'examples');
-const fragments = path.join(root, 'themes');
-fs.mkdirSync(examples, { recursive: true });
-fs.mkdirSync(fragments, { recursive: true });
-fs.writeFileSync(path.join(examples, 'example.md'), `${sampleMarkdown}\n`, 'utf8');
-
-const specimen = sampleMarkdown.split('## 02｜')[0].trim();
-for (const spec of themeSpecs) {
-  const article = renderArticle(sampleMarkdown, themes[spec.key]);
-  fs.writeFileSync(path.join(fragments, `${spec.number}-${spec.key}.html`), article + '\n', 'utf8');
+async function generate() {
+  await dom.window.mathJaxReady;
+  const api = vm.runInNewContext(
+    `${renderer}\n({ themeSpecs, themes, renderArticle, sampleMarkdown, imageAssets })`,
+    { window: dom.window, URL, console }
+  );
+  generateFiles(api);
 }
 
-const cards = themeSpecs.map(spec => {
-  const theme = themes[spec.key];
-  const article = renderArticle(specimen, theme).replace('id="rendered-article"', 'class="atlas-article"');
-  return `<article class="atlas-card" id="theme-${spec.key}">
+function generateFiles({ themeSpecs, themes, renderArticle, sampleMarkdown, imageAssets }) {
+  if (imageAssets.get('images/transfomer.jpg') !== dataUrl) throw new Error('Bundled image not initialized');
+
+  const examples = path.join(root, 'examples');
+  const fragments = path.join(root, 'themes');
+  fs.mkdirSync(examples, { recursive: true });
+  fs.mkdirSync(fragments, { recursive: true });
+  fs.writeFileSync(path.join(examples, 'example.md'), `${sampleMarkdown}\n`, 'utf8');
+
+  const specimen = sampleMarkdown.split('## 02｜')[0].trim();
+  for (const spec of themeSpecs) {
+    const article = renderArticle(sampleMarkdown, themes[spec.key]);
+    fs.writeFileSync(path.join(fragments, `${spec.number}-${spec.key}.html`), article + '\n', 'utf8');
+  }
+
+  const cards = themeSpecs.map(spec => {
+    const theme = themes[spec.key];
+    const article = renderArticle(specimen, theme).replace('id="rendered-article"', 'class="atlas-article"');
+    return `<article class="atlas-card" id="theme-${spec.key}">
     <div class="atlas-card-head"><div class="palette-bar"><span style="background:${theme.pair[0]}"></span><span style="background:${theme.pair[1]}"></span></div><div><small>THEME ${spec.number} / 09</small><h2>${spec.name}</h2><p>${spec.english}</p></div></div>
     <div class="atlas-sheet">${article}</div>
   </article>`;
-}).join('\n');
+  }).join('\n');
 
-const atlas = `<!doctype html>
+  const atlas = `<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
@@ -82,5 +93,11 @@ const atlas = `<!doctype html>
 </body>
 </html>
 `;
-fs.writeFileSync(path.join(root, 'theme-atlas.html'), atlas, 'utf8');
-console.log(`Generated example, ${themeSpecs.length} theme fragments, and atlas.`);
+  fs.writeFileSync(path.join(root, 'theme-atlas.html'), atlas, 'utf8');
+  console.log(`Generated example, ${themeSpecs.length} theme fragments, and atlas.`);
+}
+
+generate().catch(error => {
+  console.error(error);
+  process.exitCode = 1;
+}).finally(() => dom.window.close());
